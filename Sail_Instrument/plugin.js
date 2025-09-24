@@ -1016,7 +1016,7 @@ let DrawMapLaylines = function(self, ctx, intersections, props) {
         ctx.beginPath();
         ctx.moveTo(p1[0], p1[1]);
         ctx.lineTo(p2[0], p2[1]);
-        ctx.lineWidth = 5; // original: 3;
+        ctx.lineWidth = 4; // original: 3;
         ctx.strokeStyle = color;
         var d=5*window.devicePixelRatio;
         ctx.setLineDash([2*d,d]);
