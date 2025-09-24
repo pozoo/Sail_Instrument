@@ -720,6 +720,7 @@ function knots(v){
 
 var red = "red";
 var green = "rgb(0,255,0)";
+var darkgreen = "rgb(0,100,0)";
 var blue = "blue";
 var lightblue = "#3ba3f7";
 var black = "black";
@@ -1015,7 +1016,7 @@ let DrawMapLaylines = function(self, ctx, intersections, props) {
         ctx.beginPath();
         ctx.moveTo(p1[0], p1[1]);
         ctx.lineTo(p2[0], p2[1]);
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 5; // original: 3;
         ctx.strokeStyle = color;
         var d=5*window.devicePixelRatio;
         ctx.setLineDash([2*d,d]);
@@ -1029,13 +1030,13 @@ let DrawMapLaylines = function(self, ctx, intersections, props) {
         // starboard
         p1 = self.lonLatToPixel(intersections.Boat.SB.P1._lon, intersections.Boat.SB.P1._lat);
         p2 = self.lonLatToPixel(intersections.Boat.SB.P2._lon, intersections.Boat.SB.P2._lat);
-        drawLine(p1, p2, green);
+        drawLine(p1, p2, darkgreen);
     }
     if (typeof(props.LaylineWP) != 'undefined' && props.LaylineWP == true && intersections != null) {
         // port
         p1 = self.lonLatToPixel(intersections.WP.BB.P1._lon, intersections.WP.BB.P1._lat);
         p2 = self.lonLatToPixel(intersections.WP.BB.P2._lon, intersections.WP.BB.P2._lat);
-        drawLine(p1, p2, green);
+        drawLine(p1, p2, darkgreen);
         // starboard
         p1 = self.lonLatToPixel(intersections.WP.SB.P1._lon, intersections.WP.SB.P1._lat);
         p2 = self.lonLatToPixel(intersections.WP.SB.P2._lon, intersections.WP.SB.P2._lat);
