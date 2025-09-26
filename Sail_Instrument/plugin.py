@@ -84,6 +84,7 @@ DECODE = "nmea_decode"
 DEPTH_OF_TRANSDUCER = "depth_transducer"
 DRAUGHT = "draught"
 VMIN = "vmin"
+STW_CAL = "STW_cal_factor"
 
 INPUT_FIELDS = {
     "LAT": "gps.lat",
@@ -278,6 +279,12 @@ CONFIG = [
         "type": "FLOAT",
         "default": 0.2,
     },
+    {
+        "name": STW_CAL,
+        "description": "calibration factor for STW (speed through water)",
+        "type": "FLOAT",
+        "default": 1.0,
+    },
 ]
 
 
@@ -467,6 +474,12 @@ class Plugin(object):
                     data["VAR"] = self.mag_variation(data["LAT"], data["LON"])
                     self.msg += ", variation from WMM"
 
+                if data["STW"] is not None:
+                    calFactor = self.config[STW_CAL]
+                    if calFactor != 1.0:
+                        data["STW"] *= calFactor
+                        self.msg += f", STW calibrated x{calFactor}"
+                    
                 if self.config[FALLBACK]:
                     if data["HDT"] is None and any(data.get(k) is None for k in ("HDM", "VAR")):
                         data["HDT"] = data["COG"]
