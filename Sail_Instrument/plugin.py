@@ -85,7 +85,8 @@ DEPTH_OF_TRANSDUCER = "depth_transducer"
 DRAUGHT = "draught"
 VMIN = "vmin"
 STW_CAL = "STW_cal_factor"
-
+FORCE_STW_SOG = "force_STW_SOG"
+FORCE_HDT_COG = "force_HDT_COG"
 INPUT_FIELDS = {
     "LAT": "gps.lat",
     "LON": "gps.lon",
@@ -284,6 +285,18 @@ CONFIG = [
         "description": "calibration factor for STW (speed through water)",
         "type": "FLOAT",
         "default": 1.0,
+    },
+    {
+        "name": FORCE_STW_SOG,
+        "description": "force STW=SOG",
+        "type": "BOOLEAN",
+        "default": "False",
+    },
+    {
+        "name": FORCE_HDT_COG,
+        "description": "force HDT=COG",
+        "type": "BOOLEAN",
+        "default": "False",
     },
 ]
 
@@ -487,6 +500,14 @@ class Plugin(object):
                     if data["STW"] is None:
                         data["STW"] = data["SOG"]
                         self.msg += ", fallback STW=SOG"
+                
+                if self.config[FORCE_HDT_COG]:
+                    data["HDT"] = data["COG"]
+                    self.msg += ", forced HDT=COG"
+
+                if self.config[FORCE_STW_SOG]:
+                    data["STW"] = data["SOG"]
+                    self.msg += ", forced STW=SOG"
 
                 if data["DEV"] is None:
                     data["DEV"] = 0
