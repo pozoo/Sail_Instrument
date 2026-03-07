@@ -225,7 +225,7 @@ CONFIG = [
     {
         "name": WMM_FILE,
         "description": "file with WMM-coefficents for magnetic variation",
-        "default": "WMM2020.COF",
+        "default": "WMM2025.COF",
     },
     {
         "name": WMM_PERIOD,
