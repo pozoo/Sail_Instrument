@@ -153,7 +153,7 @@ CONFIG = [
     },
     {
         "name": MM_SAMPLES,
-        "description": "number of samples for calculating min/max of TWD",
+        "description": "number of samples for calculating min/max of TWD/TWS",
         "default": "200",
         "type": "NUMBER",
     },
@@ -540,6 +540,7 @@ class Plugin(object):
                 data["TWAF"] = to180(data["TWDF"] - data["HDT"]) if d.has("TWDF", "HDT") else None
                 self.smooth(data, "SET", "DFT")
                 self.min_max(data, "TWD", lambda v: to180(v - data["TWDF"]))
+                self.min_max(data, "TWS")
                 for k in ("AWS", "TWS", "DFT"):
                     if k not in data:
                         data[k + "F"] = 0

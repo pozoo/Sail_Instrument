@@ -4,7 +4,7 @@ Going to the [Server/Status-Page](https://www.wellenvogel.net/software/avnav/doc
 
 - `period` - computation interval (s)
 - `smoothing_factor` - factor within (0,1] for [exponential smoothing](https://en.wikipedia.org/wiki/Exponential_smoothing) (filtering) of wind and tide, 1 = no smoothing, filtered data as suffix `F`
-- `minmax_samples` - number of samples used for calculating min/max TWD
+- `minmax_samples` - number of samples used for calculating min/max TWD and TWS
 - `allow_fallback` - allow fallback to use HDT=COG and/or STW=SOG if former are not available
 - `calc_vmc` - perform calculation of optimal TWA for maximum VMC (see below)
 - `laylines_polar` - calculate laylines from speed matrix, not from beat/run angle in polar data`

@@ -62,10 +62,12 @@ The following values are computed or copied from their sources.
 | TWAF     | true wind angle, smoothed                                                     |                          |         |
 | TWD      | true wind direction, relative to water, relative true north                   | gps.trueWindDirection    | MWD     |
 | TWDF     | true wind direction smoothed                                                  |                          |         |
-| TWDMAX   | max true wind direction relative                                              |                          |         |
-| TWDMIN   | min true wind direction relative                                              |                          |         |
+| TWDMAX   | max true wind direction shift relative to smoothed TWD (degrees, +/-)         |                          |         |
+| TWDMIN   | min true wind direction shift relative to smoothed TWD (degrees, +/-)         |                          |         |
 | TWS      | true wind speed, relative to water                                            | gps.trueWindSpeed        | MWD     |
 | TWSF     | true wind speed, smoothed                                                     |                          |         |
+| TWSMAX   | max true wind speed over last minmax_samples samples (m/s)                    |                          |         |
+| TWSMIN   | min true wind speed over last minmax_samples samples (m/s)                    |                          |         |
 | VAR      | magnetic variation, given in chart or computed from model                     | gps.magVariation         | HDG     |
 | VMCA     | optimum VMC direction (course)                                                |                          |         |
 | VMCB     | optimum VMC direction (opposite tack)                                         |                          |         |
