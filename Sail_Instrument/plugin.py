@@ -29,6 +29,7 @@ import re
 import shutil
 import sys
 import time
+from collections import deque
 from math import sin, cos, radians, degrees, sqrt, atan2, isfinite, copysign
 
 import numpy
@@ -455,18 +456,15 @@ class Plugin(object):
     def min_max(self, data, key, func=lambda x: x):
         if not hasattr(self, "min_max_values"):
             self.min_max_values = {}
-        min_max_values = self.min_max_values
         if key not in data:
             return
-        v = data[key]
-        if key not in min_max_values:
-            min_max_values[key] = []
-        values = min_max_values[key]
-        values.append(func(v))
         samples = self.config[MM_SAMPLES]
         assert 0 < samples
-        while len(values) > samples:
-            values.pop(0)
+        if key not in self.min_max_values or self.min_max_values[key].maxlen != samples:
+            old = self.min_max_values.get(key, [])
+            self.min_max_values[key] = deque(old, maxlen=samples)
+        values = self.min_max_values[key]
+        values.append(func(data[key]))
         data[key + "MIN"], data[key + "MAX"] = min(values), max(values)
 
     def run(self):
