@@ -540,9 +540,9 @@ class Plugin(object):
                 self.smooth(data, "TWD", "TWS")
                 data["TWAF"] = to180(data["TWDF"] - data["HDT"]) if d.has("TWDF", "HDT") else None
                 # bearing and TWA for the leg AFTER the next waypoint
-                data["NWBRG"] = bearing_after_next_waypoint()
-                if data["NWBRG"] is not None and data["TWDF"] is not None:
-                    data["NWTWA"] = to180(data["TWDF"] - data["NWBRG"])
+                data["NWPBRG"] = bearing_after_next_waypoint()
+                if data["NWPBRG"] is not None and data["TWDF"] is not None:
+                    data["NWPTWA"] = to180(data["TWDF"] - data["NWPBRG"])
                 self.smooth(data, "SET", "DFT")
                 self.min_max(data, "TWD", lambda v: to180(v - data["TWDF"]))
                 self.min_max(data, "TWS")
