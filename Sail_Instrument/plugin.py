@@ -542,7 +542,7 @@ class Plugin(object):
                 # bearing and TWA for the leg AFTER the next waypoint
                 data["NWBRG"] = bearing_after_next_waypoint()
                 if data["NWBRG"] is not None and data["TWDF"] is not None:
-                    data["NWTWA"] = to180(data["NWBRG"] - data["TWDF"])
+                    data["NWTWA"] = to180(data["TWDF"] - data["NWBRG"])
                 self.smooth(data, "SET", "DFT")
                 self.min_max(data, "TWD", lambda v: to180(v - data["TWDF"]))
                 self.min_max(data, "TWS")
