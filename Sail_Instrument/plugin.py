@@ -40,6 +40,7 @@ from avnav_nmea import NMEAParser
 try:
     from avnrouter import AVNRouter, WpData
     from avnav_worker import AVNWorker
+    from avnav_util import AVNUtil
 except:
     pass
 
@@ -538,6 +539,10 @@ class Plugin(object):
                 data["AWAF"] = to360(data["AWDF"] - data["HDT"]) if d.has("AWDF", "HDT") else None
                 self.smooth(data, "TWD", "TWS")
                 data["TWAF"] = to180(data["TWDF"] - data["HDT"]) if d.has("TWDF", "HDT") else None
+                # bearing and TWA for the leg AFTER the next waypoint
+                data["NWBRG"] = bearing_after_next_waypoint()
+                if data["NWBRG"] is not None and data["TWDF"] is not None:
+                    data["NWTWA"] = to180(data["NWBRG"] - data["TWDF"])
                 self.smooth(data, "SET", "DFT")
                 self.min_max(data, "TWD", lambda v: to180(v - data["TWDF"]))
                 self.min_max(data, "TWS")
@@ -681,6 +686,46 @@ def bearing_to_waypoint():
         return wpData.dstBearing
     except:
         return
+
+
+def bearing_after_next_waypoint():
+    """
+    Returns the great-circle bearing of the leg that starts at the NEXT waypoint
+    (current target) and ends at the waypoint after that.
+    This is the future COG after the next WP is passed.
+    Returns None when:
+      - no active route navigation (direct WP, anchor watch, MOB)
+      - the current target is the last waypoint in the route
+      - currentTarget index is unavailable
+    """
+    try:
+        router = AVNWorker.findHandlerByName(AVNRouter.getConfigName())
+        if router is None:
+            return None
+        leg = router.getCurrentLeg()
+        if leg is None or not leg.isActive() or leg.isMob() or leg.isAnchorWatch():
+            return None
+        route = leg.getCurrentRoute()
+        if route is None:
+            return None
+        points = route.get('points')
+        if not points:
+            return None
+        currentTarget = leg.getCurrentTarget()
+        if currentTarget is None:
+            return None
+        nextIdx = currentTarget + 1
+        if nextIdx >= len(points):
+            return None  # current target is the last WP – no next leg exists
+        wpFrom = points[currentTarget]  # = next WP (current target)
+        wpTo = points[nextIdx]          # = WP after next
+        lat1 = float(wpFrom.get('lat', 0))
+        lon1 = float(wpFrom.get('lon', 0))
+        lat2 = float(wpTo.get('lat', 0))
+        lon2 = float(wpTo.get('lon', 0))
+        return AVNUtil.calcBearing((lat1, lon1), (lat2, lon2))
+    except Exception:
+        return None
 
 
 class Polar:
